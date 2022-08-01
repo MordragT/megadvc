@@ -16,7 +16,7 @@
       let
         pname = "template";
         version = "0.1.0";
-        pkgs = nixpkgs.legacyPackages.${system}; # legacyPackages is a workaround for using packages from ol' nixpkgs
+        pkgs = import nixpkgs { inherit system; };
       in
       {
         # called when `nix build` / `nix run` is invoked
