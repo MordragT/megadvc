@@ -33,6 +33,8 @@
           # cargohash isn't taken: https://github.com/nix-community/fenix/issues/70#issuecomment-1114333311
           cargoLock.lockFile = ./Cargo.lock;
 
+          buildInputs = with pkgs; [ megacmd ];
+              
           # for other makeRustPlatform features see: 
           # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md#cargo-features-cargo-features
         };
@@ -41,18 +43,17 @@
         devShells.default = pkgs.mkShell {
 
           # use nightly cargo & rustc provided by fenix. Add for packages for the dev shell here
-          buildInputs = with fenix.packages.${system}.complete; [
-            (with fenix.packages.${system}.complete; [
+          buildInputs = (with fenix.packages.${system}.complete; [
               cargo
               rustc
               rust-src
               clippy
               rustfmt
-            ])
+            ]) ++
             (with pkgs; [
               pkg-config
-            ])
-          ];
+              megacmd
+            ]);
 
           # specify the rust-src path (many editors rely on this)
           RUST_SRC_PATH = "${fenix.packages.${system}.complete.rust-src}/lib/rustlib/src/rust/library";
